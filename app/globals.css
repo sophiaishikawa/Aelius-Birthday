@@ -386,8 +386,12 @@ body {
 
 .detail-icon {
   font-size: 2.4rem;
-  display: block;
-  margin-bottom: 12px;
+  /* fixed height so different emojis render at consistent size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  margin-bottom: 4px;
 }
 
 .detail-label {
@@ -444,8 +448,9 @@ body {
 /* Venue detail card colors (separate from .venue-card in location section) */
 .detail-card.venue-detail-card {
   background: var(--black);
-  /* visible border so the card edge is perceptually equal to date/time cards */
   border-color: rgba(255,255,255,0.45);
+  /* explicit equal padding — prevents any inherited or cascade override */
+  padding: 32px 24px !important;
 }
 .detail-card.venue-detail-card .detail-label { color: rgba(255,255,255,0.6); }
 .detail-card.venue-detail-card .detail-value { color: var(--white); }
