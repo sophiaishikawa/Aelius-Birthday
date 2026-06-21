@@ -174,14 +174,17 @@ export default function Home() {
             <div className="detail-hint">Replace with your time</div>
           </div>
 
-          {/* <div className="detail-card venue-detail-card" data-reveal data-reveal-delay="260"> */}
-
-          {/* <div className="detail-card time-card" data-reveal data-reveal-delay="260">
+          <div
+            className="detail-card"
+            data-reveal
+            data-reveal-delay="260"
+            style={{ background: '#1c1c1c', borderColor: 'rgba(28,28,28,0.8)' }}
+          >
             <span className="detail-icon">📍</span>
-            <div className="detail-label">Venue</div>
-            <div className="detail-value">Coming Soon</div>
-            <div className="detail-hint">Replace with your venue</div>
-          </div> */}
+            <div className="detail-label" style={{ color: 'rgba(255,255,255,0.6)' }}>Venue</div>
+            <div className="detail-value" style={{ color: '#ffffff' }}>Coming Soon</div>
+            <div className="detail-hint" style={{ color: 'rgba(255,255,255,0.4)' }}>Replace with your venue</div>
+          </div>
         </div>
 
         <div data-reveal data-reveal-delay="120">

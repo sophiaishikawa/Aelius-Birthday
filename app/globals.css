@@ -445,25 +445,13 @@ body {
 .detail-card.time-card .detail-label { color: rgba(255,255,255,0.75); }
 .detail-card.time-card .detail-value { color: var(--white); }
 .detail-card.time-card .detail-hint  { color: rgba(255,255,255,0.5); }
-/* Venue detail card colors (separate from .venue-card in location section) */
-.detail-card.venue-detail-card {
-  background: var(--black);
-  border-color: rgba(255,255,255,0.45);
-  /* explicit equal padding — prevents any inherited or cascade override */
-  padding: 32px 24px !important;
-}
-.detail-card.venue-detail-card .detail-label { color: rgba(255,255,255,0.6); }
-.detail-card.venue-detail-card .detail-value { color: var(--white); }
-.detail-card.venue-detail-card .detail-hint  { color: rgba(255,255,255,0.4); }
-
 /* Ticket dashed divider inside each card */
 .detail-card .detail-label {
   border-bottom: 2px dashed rgba(28,28,28,0.15);
   padding-bottom: 10px;
   margin-bottom: 10px;
 }
-.detail-card.time-card .detail-label,
-.detail-card.venue-detail-card .detail-label {
+.detail-card.time-card .detail-label {
   border-bottom-color: rgba(255,255,255,0.2);
 }
 
