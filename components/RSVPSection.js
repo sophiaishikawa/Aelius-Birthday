@@ -7,7 +7,6 @@ const FORMSPREE_URL = 'https://formspree.io/f/xlgyrnpj';
 
 // ── Mickey icons ────────────────────────────────────────────────────────────
 
-// Large Mickey for modal header + celebration panel
 function ModalMickey() {
   return (
     <svg
@@ -25,37 +24,34 @@ function ModalMickey() {
   );
 }
 
-// Small Mickey used inside each guest-count button; fill follows CSS currentColor
-function TinyMickey() {
-  return (
-    <svg
-      className="guest-mickey-svg"
-      width="34"
-      height="30"
-      viewBox="0 0 200 175"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <circle cx="52"   cy="50"  r="46"      fill="currentColor" />
-      <circle cx="148"  cy="50"  r="46"      fill="currentColor" />
-      <ellipse cx="100" cy="122" rx="78" ry="60" fill="currentColor" />
-    </svg>
-  );
-}
+// ── Stepper component ────────────────────────────────────────────────────────
 
-// ── Reusable guest-count button ──────────────────────────────────────────────
-function GuestBtn({ value, selected, onClick }) {
+function Stepper({ label, value, min, max, onChange }) {
   return (
-    <button
-      className={`guest-btn${selected ? ' guest-btn--selected' : ''}`}
-      onClick={() => onClick(value)}
-      aria-pressed={selected}
-    >
-      <TinyMickey />
-      <span className="guest-num">{value}</span>
-      <span className="guest-label">{value === 1 ? 'guest' : 'guests'}</span>
-    </button>
+    <div className="stepper-row">
+      <span className="stepper-label">{label}</span>
+      <div className="stepper-controls">
+        <button
+          type="button"
+          className="stepper-btn"
+          onClick={() => onChange(Math.max(min, value - 1))}
+          disabled={value <= min}
+          aria-label={`Decrease ${label}`}
+        >
+          −
+        </button>
+        <span className="stepper-value">{value}</span>
+        <button
+          type="button"
+          className="stepper-btn"
+          onClick={() => onChange(Math.min(max, value + 1))}
+          disabled={value >= max}
+          aria-label={`Increase ${label}`}
+        >
+          +
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -89,25 +85,20 @@ const BALLOONS = [
   { emoji: '⭐', left: '93%', delay: '2.2s', dur: '8s'  },
 ];
 
-const EMPTY_FORM = {
-  yourName: '',
-  guest1: '',
-  guest2: '',
-  guest3: '',
-  additionalGuests: '',
-  notes: '',
-};
+const EMPTY_FORM = { yourName: '', notes: '' };
 
 // ── Main component ───────────────────────────────────────────────────────────
 
 export default function RSVPSection() {
-  const [total,        setTotal]        = useState(null);
+  const [totalCount,   setTotalCount]   = useState(null);
+  const [adultsCount,  setAdultsCount]  = useState(0);
+  const [kidsCount,    setKidsCount]    = useState(0);
   const [displayTotal, setDisplayTotal] = useState(0);
   const [hasRSVPd,     setHasRSVPd]     = useState(false);
   // modalStep: null | 'size' | 'form'
   const [modalStep,    setModalStep]    = useState(null);
-  const [guestCount,   setGuestCount]   = useState(null);
-  const [showMore,     setShowMore]     = useState(false);
+  const [adults,       setAdults]       = useState(1);
+  const [kids,         setKids]         = useState(0);
   const [loading,      setLoading]      = useState(true);
   const [submitting,   setSubmitting]   = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -116,7 +107,7 @@ export default function RSVPSection() {
   const prevTotalRef = useRef(0);
   const magnetRef    = useRef(null);
 
-  // Fetch current total + hydrate localStorage state
+  // Fetch current totals + hydrate localStorage state
   useEffect(() => {
     try {
       if (localStorage.getItem(STORAGE_KEY)) setHasRSVPd(true);
@@ -124,16 +115,20 @@ export default function RSVPSection() {
 
     fetch('/api/rsvp')
       .then((r) => r.json())
-      .then((data) => setTotal(data.total ?? 0))
-      .catch(() => setTotal(0))
+      .then((data) => {
+        setTotalCount(data.total   ?? 0);
+        setAdultsCount(data.adults ?? 0);
+        setKidsCount(data.kids     ?? 0);
+      })
+      .catch(() => setTotalCount(0))
       .finally(() => setLoading(false));
   }, []);
 
-  // Count-up animation whenever `total` changes
+  // Count-up animation whenever `totalCount` changes
   useEffect(() => {
-    if (total === null) return;
+    if (totalCount === null) return;
     const from = prevTotalRef.current;
-    const to   = total;
+    const to   = totalCount;
     prevTotalRef.current = to;
     if (from === to) { setDisplayTotal(to); return; }
     const duration  = 1000;
@@ -145,7 +140,7 @@ export default function RSVPSection() {
       if (progress < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
-  }, [total]);
+  }, [totalCount]);
 
   // Close modal on Escape key
   useEffect(() => {
@@ -155,16 +150,15 @@ export default function RSVPSection() {
     return () => document.removeEventListener('keydown', onKey);
   }, [modalStep]);
 
-  // ── Step 1: user picks group size → advance to form ───────────────────────
+  // ── Step 1 → Step 2 ──────────────────────────────────────────────────────
 
-  const handleGuestCountSelect = useCallback((count) => {
-    setGuestCount(count);
+  const handleConfirmSize = useCallback(() => {
     setFormData(EMPTY_FORM);
     setFormError(null);
     setModalStep('form');
   }, []);
 
-  // ── Form helpers ───────────────────────────────────────────────────────────
+  // ── Form helpers ──────────────────────────────────────────────────────────
 
   const updateField = useCallback(
     (field) => (e) => setFormData((prev) => ({ ...prev, [field]: e.target.value })),
@@ -172,6 +166,7 @@ export default function RSVPSection() {
   );
 
   // ── Magnetic RSVP button ──────────────────────────────────────────────────
+
   const handleMagnet = useCallback((e) => {
     const btn = magnetRef.current;
     if (!btn || hasRSVPd) return;
@@ -190,32 +185,27 @@ export default function RSVPSection() {
   }, []);
 
   const goBackToSize = useCallback(() => {
-    // Auto-expand "More" section if their previous pick was 5+
-    if (guestCount !== null && guestCount >= 5) setShowMore(true);
     setModalStep('size');
-  }, [guestCount]);
+  }, []);
 
-  // ── Step 2: submit Formspree + increment Redis counter ────────────────────
+  // ── Step 2: submit Formspree + increment Redis ────────────────────────────
 
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();
     setSubmitting(true);
     setFormError(null);
 
+    const total = adults + kids;
+
     try {
-      // Build Formspree payload
       const payload = {
-        '_subject':                     `RSVP: ${formData.yourName} (party of ${guestCount})`,
+        '_subject':                     `RSVP: ${formData.yourName} (${adults} adult${adults !== 1 ? 's' : ''}, ${kids} kid${kids !== 1 ? 's' : ''})`,
         'Your Name':                    formData.yourName,
-        'Guest Count':                  String(guestCount),
+        'Adults':                       String(adults),
+        'Kids':                         String(kids),
+        'Total Guests':                 String(total),
         'Notes / Dietary Restrictions': formData.notes || 'None',
       };
-      if (guestCount >= 2)  payload['Guest 1 Name']     = formData.guest1;
-      if (guestCount >= 3)  payload['Guest 2 Name']     = formData.guest2;
-      if (guestCount >= 4) {
-        payload['Guest 3 Name'] = formData.guest3;
-        if (formData.additionalGuests) payload['Additional Guests'] = formData.additionalGuests;
-      }
 
       // 1. Submit to Formspree
       const formRes = await fetch(FORMSPREE_URL, {
@@ -228,21 +218,23 @@ export default function RSVPSection() {
         throw new Error(data.error ?? 'Submission failed — please try again!');
       }
 
-      // 2. Increment Redis counter (non-critical — ignore 429 / network failures)
+      // 2. Increment Redis counters (non-critical)
       try {
         const apiRes = await fetch('/api/rsvp', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ guests: guestCount }),
+          body:    JSON.stringify({ adults, kids }),
         });
         if (apiRes.ok) {
           const apiData = await apiRes.json();
-          setTotal(apiData.total);
+          setTotalCount(apiData.total);
+          setAdultsCount(apiData.adults);
+          setKidsCount(apiData.kids);
         }
       } catch { /* counter update is non-critical */ }
 
       // 3. Mark locally & celebrate
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ guests: guestCount, ts: Date.now() }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ adults, kids, total, ts: Date.now() }));
       setHasRSVPd(true);
       setModalStep(null);
       setShowConfetti(true);
@@ -252,7 +244,7 @@ export default function RSVPSection() {
     } finally {
       setSubmitting(false);
     }
-  }, [formData, guestCount]);
+  }, [formData, adults, kids]);
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -299,16 +291,23 @@ export default function RSVPSection() {
         <h2 className="rsvp-heading">Will you be there?</h2>
         <p className="rsvp-sub">Let us know you&apos;re coming — every guest counts! 🎈</p>
 
-        {/* Live counter with count-up animation */}
+        {/* Live counter */}
         <div className="counter-display" aria-live="polite" aria-label="Guest attendance count">
           {loading ? (
             <span className="spinner" aria-label="Loading guest count" />
           ) : (
-            <>🎉 {displayTotal.toLocaleString()} guests attending!</>
+            <div className="counter-grid">
+              <div className="counter-total">🎉 {displayTotal.toLocaleString()} total guests</div>
+              <div className="counter-breakdown">
+                <span>👨‍👩‍👧 {adultsCount.toLocaleString()} adults</span>
+                <span className="counter-divider">·</span>
+                <span>👶 {kidsCount.toLocaleString()} kids</span>
+              </div>
+            </div>
           )}
         </div>
 
-        {/* CTA — three states: celebrated / submitting / default */}
+        {/* CTA */}
         {hasRSVPd ? (
           <div className="rsvp-celebration">
             <div className="celebration-mickey"><ModalMickey /></div>
@@ -325,8 +324,8 @@ export default function RSVPSection() {
             ref={magnetRef}
             className="attend-btn"
             onClick={() => {
-              setGuestCount(null);
-              setShowMore(false);
+              setAdults(1);
+              setKids(0);
               setModalStep('size');
             }}
             onMouseMove={handleMagnet}
@@ -338,7 +337,7 @@ export default function RSVPSection() {
         )}
       </section>
 
-      {/* ── Modal ──────────────────────────────────────────── */}
+      {/* ── Modal ──────────────────────────────────────── */}
       {modalStep && (
         <div
           className="modal-overlay"
@@ -352,64 +351,53 @@ export default function RSVPSection() {
               <ModalMickey />
             </div>
 
-            {/* ── Step 1: group size picker ── */}
+            {/* ── Step 1: adults / kids steppers ── */}
             {modalStep === 'size' ? (
               <>
                 <h3 className="modal-title" id="modal-title">
-                  How many in your group?
+                  Who&apos;s coming?
                 </h3>
-                <p className="modal-sub">We want to make sure we have room for everyone!</p>
+                <p className="modal-sub">Tell us how many adults and kids!</p>
 
-                {/* Initial 4 buttons */}
-                <div className="guest-grid">
-                  {[1, 2, 3, 4].map((n) => (
-                    <GuestBtn
-                      key={n}
-                      value={n}
-                      selected={guestCount === n}
-                      onClick={handleGuestCountSelect}
-                    />
-                  ))}
+                <div className="stepper-group">
+                  <Stepper
+                    label="Adults 👨‍👩‍👧"
+                    value={adults}
+                    min={1}
+                    max={10}
+                    onChange={setAdults}
+                  />
+                  <Stepper
+                    label="Kids 👶"
+                    value={kids}
+                    min={0}
+                    max={10}
+                    onChange={setKids}
+                  />
                 </div>
 
-                {/* More... / Less toggle */}
-                <button
-                  className="guest-more-btn"
-                  onClick={() => setShowMore((v) => !v)}
-                  aria-expanded={showMore}
-                >
-                  {showMore ? 'Less ▲' : 'More... ▼'}
+                <p className="stepper-total">
+                  Total: <strong>{adults + kids}</strong> {adults + kids === 1 ? 'guest' : 'guests'}
+                </p>
+
+                <button className="stepper-confirm-btn" onClick={handleConfirmSize}>
+                  Confirm →
                 </button>
-
-                {/* Expandable 5–10 */}
-                <div className={`guest-grid-more${showMore ? ' guest-grid-more--open' : ''}`}>
-                  {[5, 6, 7, 8, 9, 10].map((n) => (
-                    <GuestBtn
-                      key={n}
-                      value={n}
-                      selected={guestCount === n}
-                      onClick={handleGuestCountSelect}
-                    />
-                  ))}
-                </div>
 
                 <button
                   className="modal-cancel"
-                  style={{ marginTop: 16 }}
+                  style={{ marginTop: 12 }}
                   onClick={() => setModalStep(null)}
                 >
                   Cancel
                 </button>
               </>
             ) : (
-              /* ── Step 2: name form ── */
+              /* ── Step 2: name + notes form ── */
               <form className="rsvp-form" onSubmit={handleFormSubmit}>
                 <h3 className="modal-title" id="modal-title">
                   Almost there! 🎉
                 </h3>
-                <p className="modal-sub">
-                  Party of {guestCount} — tell us your name{guestCount > 1 ? 's' : ''}!
-                </p>
 
                 {formError && <p className="modal-error">⚠️ {formError}</p>}
 
@@ -426,65 +414,8 @@ export default function RSVPSection() {
                   />
                 </div>
 
-                {guestCount >= 2 && (
-                  <div className="form-field">
-                    <label className="form-label" htmlFor="guest1">Guest 1 Name</label>
-                    <input
-                      id="guest1"
-                      className="form-input"
-                      type="text"
-                      placeholder="Guest's name"
-                      value={formData.guest1}
-                      onChange={updateField('guest1')}
-                    />
-                  </div>
-                )}
-
-                {guestCount >= 3 && (
-                  <div className="form-field">
-                    <label className="form-label" htmlFor="guest2">Guest 2 Name</label>
-                    <input
-                      id="guest2"
-                      className="form-input"
-                      type="text"
-                      placeholder="Guest's name"
-                      value={formData.guest2}
-                      onChange={updateField('guest2')}
-                    />
-                  </div>
-                )}
-
-                {guestCount >= 4 && (
-                  <>
-                    <div className="form-field">
-                      <label className="form-label" htmlFor="guest3">Guest 3 Name</label>
-                      <input
-                        id="guest3"
-                        className="form-input"
-                        type="text"
-                        placeholder="Guest's name"
-                        value={formData.guest3}
-                        onChange={updateField('guest3')}
-                      />
-                    </div>
-                    <div className="form-field">
-                      <label className="form-label" htmlFor="additionalGuests">
-                        Additional Guests {guestCount > 4 ? `(guests 4–${guestCount})` : ''}
-                      </label>
-                      <input
-                        id="additionalGuests"
-                        className="form-input"
-                        type="text"
-                        placeholder="Names of any additional guests"
-                        value={formData.additionalGuests}
-                        onChange={updateField('additionalGuests')}
-                      />
-                    </div>
-                  </>
-                )}
-
                 <div className="form-field">
-                  <label className="form-label" htmlFor="notes">Notes / Dietary Restrictions</label>
+                  <label className="form-label" htmlFor="notes">Notes (optional)</label>
                   <textarea
                     id="notes"
                     className="form-textarea"
@@ -492,6 +423,10 @@ export default function RSVPSection() {
                     value={formData.notes}
                     onChange={updateField('notes')}
                   />
+                </div>
+
+                <div className="rsvp-summary">
+                  You&apos;re bringing {adults} adult{adults !== 1 ? 's' : ''} and {kids} kid{kids !== 1 ? 's' : ''} 🎉
                 </div>
 
                 <button
