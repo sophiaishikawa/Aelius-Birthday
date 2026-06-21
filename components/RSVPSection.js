@@ -24,6 +24,26 @@ function ModalMickey() {
   );
 }
 
+// ── Stepper icons ────────────────────────────────────────────────────────────
+
+function AdultIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="12" cy="6" r="4" fill="#1c1c1c" />
+      <path d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#1c1c1c" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+    </svg>
+  );
+}
+
+function KidIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="12" cy="7" r="3.5" fill="#1c1c1c" />
+      <path d="M6 21c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#1c1c1c" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+    </svg>
+  );
+}
+
 // ── Stepper component ────────────────────────────────────────────────────────
 
 function Stepper({ label, value, min, max, onChange }) {
@@ -85,7 +105,7 @@ const BALLOONS = [
   { emoji: '⭐', left: '93%', delay: '2.2s', dur: '8s'  },
 ];
 
-const EMPTY_FORM = { yourName: '', notes: '' };
+const EMPTY_FORM = { yourName: '', kidsNames: '' };
 
 // ── Main component ───────────────────────────────────────────────────────────
 
@@ -204,7 +224,7 @@ export default function RSVPSection() {
         'Adults':                       String(adults),
         'Kids':                         String(kids),
         'Total Guests':                 String(total),
-        'Notes / Dietary Restrictions': formData.notes || 'None',
+        "Kids' Names":                  formData.kidsNames || 'N/A',
       };
 
       // 1. Submit to Formspree
@@ -361,14 +381,14 @@ export default function RSVPSection() {
 
                 <div className="stepper-group">
                   <Stepper
-                    label="Adults 👨‍👩‍👧"
+                    label={<><AdultIcon /> Adults</>}
                     value={adults}
                     min={1}
                     max={10}
                     onChange={setAdults}
                   />
                   <Stepper
-                    label="Kids 👶"
+                    label={<><KidIcon /> Kids</>}
                     value={kids}
                     min={0}
                     max={10}
@@ -414,16 +434,19 @@ export default function RSVPSection() {
                   />
                 </div>
 
-                <div className="form-field">
-                  <label className="form-label" htmlFor="notes">Notes (optional)</label>
-                  <textarea
-                    id="notes"
-                    className="form-textarea"
-                    placeholder="Any allergies, dietary needs, or notes for us?"
-                    value={formData.notes}
-                    onChange={updateField('notes')}
-                  />
-                </div>
+                {kids > 0 && (
+                  <div className="form-field">
+                    <label className="form-label" htmlFor="kidsNames">What are your kids&apos; names?</label>
+                    <input
+                      id="kidsNames"
+                      className="form-input"
+                      type="text"
+                      placeholder="e.g. Emma, Lucas, Anna..."
+                      value={formData.kidsNames}
+                      onChange={updateField('kidsNames')}
+                    />
+                  </div>
+                )}
 
                 <div className="rsvp-summary">
                   You&apos;re bringing {adults} adult{adults !== 1 ? 's' : ''} and {kids} kid{kids !== 1 ? 's' : ''} 🎉
