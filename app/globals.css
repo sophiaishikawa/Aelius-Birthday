@@ -431,13 +431,13 @@ body {
 .detail-card.time-card .detail-label { color: rgba(255,255,255,0.75); }
 .detail-card.time-card .detail-value { color: var(--white); }
 .detail-card.time-card .detail-hint  { color: rgba(255,255,255,0.5); }
-.detail-card.venue-card {
+.details-grid .detail-card:nth-child(3) {
   background: var(--black);
   border-color: rgba(255,255,255,0.15);
 }
-.detail-card.venue-card .detail-label { color: rgba(255,255,255,0.6); }
-.detail-card.venue-card .detail-value { color: var(--white); }
-.detail-card.venue-card .detail-hint  { color: rgba(255,255,255,0.4); }
+.details-grid .detail-card:nth-child(3) .detail-label { color: rgba(255,255,255,0.6); }
+.details-grid .detail-card:nth-child(3) .detail-value { color: var(--white); }
+.details-grid .detail-card:nth-child(3) .detail-hint  { color: rgba(255,255,255,0.4); }
 
 /* Ticket dashed divider inside each card */
 .detail-card .detail-label {
@@ -446,7 +446,7 @@ body {
   margin-bottom: 10px;
 }
 .detail-card.time-card .detail-label,
-.detail-card.venue-card .detail-label {
+.details-grid .detail-card:nth-child(3) .detail-label {
   border-bottom-color: rgba(255,255,255,0.2);
 }
 
