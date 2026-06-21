@@ -1362,10 +1362,22 @@ body {
 
 /* Tablet / large phone */
 @media (max-width: 640px) {
-  /* Details grid → single column so all cards are equal width */
+  /* Details grid → single column, equal-width cards */
   .details-grid {
     grid-template-columns: 1fr;
-    max-width: 400px;
+    max-width: 420px;
+  }
+
+  /* Force all 3 cards to identical dimensions */
+  .detail-card {
+    width: 100%;
+    min-height: 148px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 24px;
+    box-sizing: border-box;
   }
 
   /* Gift grid → 2 equal columns */
@@ -1440,12 +1452,20 @@ body {
   .details-grid {
     grid-template-columns: 1fr;
     max-width: 100%;
-    gap: 16px;
+    gap: 14px;
   }
 
-  /* All detail cards same width */
+  /* All 3 detail cards: identical size */
   .detail-card {
+    width: 100%;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 24px 20px;
+    box-sizing: border-box;
+    border-radius: 20px;
   }
 
   /* Countdown strip */
