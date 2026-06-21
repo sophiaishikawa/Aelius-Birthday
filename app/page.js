@@ -174,7 +174,9 @@ export default function Home() {
             <div className="detail-hint">Replace with your time</div>
           </div>
 
-          <div className="detail-card venue-detail-card" data-reveal data-reveal-delay="260">
+          {/* <div className="detail-card venue-detail-card" data-reveal data-reveal-delay="260"> */}
+
+          <div className="detail-card time-card" data-reveal data-reveal-delay="260">
             <span className="detail-icon">📍</span>
             <div className="detail-label">Venue</div>
             <div className="detail-value">Coming Soon</div>
