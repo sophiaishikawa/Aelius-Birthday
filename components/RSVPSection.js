@@ -24,6 +24,28 @@ function ModalMickey() {
   );
 }
 
+// ── Counter Mickey icons (gold, inline) ──────────────────────────────────────
+
+function MickeyAdult() {
+  return (
+    <svg width="22" height="20" viewBox="0 0 200 175" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 4 }}>
+      <circle cx="52"  cy="50"  r="46"     fill="#ffd700" />
+      <circle cx="148" cy="50"  r="46"     fill="#ffd700" />
+      <ellipse cx="100" cy="122" rx="78" ry="60" fill="#ffd700" />
+    </svg>
+  );
+}
+
+function MickeyKid() {
+  return (
+    <svg width="16" height="14" viewBox="0 0 200 175" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 4 }}>
+      <circle cx="52"  cy="50"  r="46"     fill="#ffd700" />
+      <circle cx="148" cy="50"  r="46"     fill="#ffd700" />
+      <ellipse cx="100" cy="122" rx="78" ry="60" fill="#ffd700" />
+    </svg>
+  );
+}
+
 // ── Stepper icons ────────────────────────────────────────────────────────────
 
 function AdultIcon() {
@@ -319,9 +341,9 @@ export default function RSVPSection() {
             <div className="counter-grid">
               <div className="counter-total">🎉 {displayTotal.toLocaleString()} total guests</div>
               <div className="counter-breakdown">
-                <span>👨‍👩‍👧 {adultsCount.toLocaleString()} adults</span>
+                <span><MickeyAdult />{adultsCount.toLocaleString()} adults</span>
                 <span className="counter-divider">·</span>
-                <span>👶 {kidsCount.toLocaleString()} kids</span>
+                <span><MickeyKid />{kidsCount.toLocaleString()} kids</span>
               </div>
             </div>
           )}
