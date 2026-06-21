@@ -160,25 +160,28 @@ export default function Home() {
         </h2>
         <div className="section-rule" data-reveal data-reveal-delay="80" />
 
-        <div className="details-grid">
-          <div className="detail-card date-card"  data-reveal data-reveal-delay="0">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '860px', margin: '0 auto 40px' }}>
+          <div className="detail-card date-card" data-reveal data-reveal-delay="0"
+            style={{ width: '100%', minHeight: '160px' }}>
             <span className="detail-icon">📅</span>
             <div className="detail-label">Date</div>
             <div className="detail-value">July 18, 2026</div>
           </div>
 
-          <div className="detail-card time-card"  data-reveal data-reveal-delay="130">
+          <div className="detail-card time-card" data-reveal data-reveal-delay="130"
+            style={{ width: '100%', minHeight: '160px' }}>
             <span className="detail-icon">🕐</span>
             <div className="detail-label">Time</div>
             <div className="detail-value">Coming Soon</div>
             <div className="detail-hint">Replace with your time</div>
           </div>
 
-          <div className="detail-card" data-reveal data-reveal-delay="260">
+          <div className="detail-card" data-reveal data-reveal-delay="260"
+            style={{ width: '100%', minHeight: '160px', background: '#1c1c1c', borderColor: 'rgba(255,255,255,0.15)' }}>
             <span className="detail-icon">📍</span>
-            <div className="detail-label">Venue</div>
-            <div className="detail-value">Coming Soon</div>
-            <div className="detail-hint">Replace with your venue</div>
+            <div className="detail-label" style={{ color: 'rgba(255,255,255,0.6)' }}>Venue</div>
+            <div className="detail-value" style={{ color: '#ffffff' }}>Coming Soon</div>
+            <div className="detail-hint" style={{ color: 'rgba(255,255,255,0.4)' }}>Replace with your venue</div>
           </div>
         </div>
 
