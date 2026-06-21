@@ -1359,6 +1359,55 @@ body {
 }
 
 /* ─── Responsive ──────────────────────────────── */
+
+/* Tablet / large phone */
+@media (max-width: 640px) {
+  /* Details grid → single column so all cards are equal width */
+  .details-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+
+  /* Gift grid → 2 equal columns */
+  .gift-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .gift-card {
+    flex: none; /* let grid control sizing */
+    width: 100%;
+  }
+
+  /* Venue card full width */
+  .venue-card {
+    max-width: 100%;
+  }
+
+  /* Description card full width */
+  .description-card {
+    max-width: 100%;
+  }
+
+  /* Modal wider on tablets */
+  .modal-box {
+    max-width: 100%;
+  }
+
+  /* Countdown cells: slightly smaller */
+  .countdown-cell {
+    min-width: 64px;
+    padding: 12px 14px;
+  }
+
+  /* Dress swatches tighter gap */
+  .dress-code-swatches {
+    gap: 18px;
+  }
+}
+
+/* Small phones */
 @media (max-width: 480px) {
   .hero {
     padding: 40px 16px 80px;
@@ -1370,49 +1419,180 @@ body {
   }
 
   .birthday-tag {
-    font-size: 0.95rem;
-    padding: 12px 32px;
-    letter-spacing: 3px;
+    font-size: 0.85rem;
+    padding: 11px 22px;
+    letter-spacing: 2px;
+    max-width: calc(100vw - 32px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .event-details {
     padding: 72px 16px 64px;
   }
 
-  .rsvp-section {
-    padding: 80px 16px 64px;
+  .section-heading {
+    font-size: clamp(1.5rem, 5.5vw, 2rem);
   }
 
-  .attend-btn {
-    font-size: 1.3rem;
-    padding: 16px 36px;
+  /* Details grid → stacked, full width */
+  .details-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    gap: 16px;
   }
 
-  .modal-box {
-    padding: 36px 24px 28px;
+  /* All detail cards same width */
+  .detail-card {
+    padding: 24px 20px;
+  }
+
+  /* Countdown strip */
+  .countdown-cells {
+    gap: 8px;
+  }
+  .countdown-cell {
+    min-width: 58px;
+    padding: 10px 12px;
+    border-radius: 14px;
   }
 
   .description-card {
-    padding: 28px 20px;
+    padding: 24px 18px;
+    max-width: 100%;
   }
 
+  /* Location section */
   .location-section {
     padding: 72px 16px 64px;
   }
 
   .map-illustrated {
-    height: 220px;
+    height: 200px;
+    border-radius: 20px;
+  }
+
+  .location-chips {
+    gap: 8px;
+  }
+
+  .location-chip {
+    padding: 7px 14px;
+    font-size: 0.82rem;
   }
 
   .venue-card {
-    padding: 28px 20px;
+    padding: 24px 18px;
+    max-width: 100%;
+    border-radius: 20px;
+    gap: 8px;
   }
 
+  .venue-name {
+    font-size: 1.25rem;
+  }
+
+  .venue-address {
+    font-size: 0.88rem;
+  }
+
+  .directions-btn {
+    font-size: 1rem;
+    padding: 10px 24px;
+  }
+
+  /* Gift section */
   .gift-section {
     padding: 72px 16px 64px;
   }
 
+  /* 2-column gift grid on small phones */
+  .gift-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
   .gift-card {
-    flex: 0 1 160px;
+    flex: none;
+    width: 100%;
+    padding: 20px 12px;
+    border-radius: 20px;
+  }
+
+  .gift-emoji-bg {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 10px;
+  }
+
+  .gift-emoji {
+    font-size: 1.8rem;
+  }
+
+  .gift-category {
+    font-size: 0.95rem;
+  }
+
+  .gift-description {
+    font-size: 0.78rem;
+  }
+
+  /* Dress code */
+  .dress-code-section {
+    padding: 72px 16px 64px;
+  }
+
+  .dress-code-swatches {
+    gap: 16px;
+  }
+
+  .swatch-circle {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* RSVP */
+  .rsvp-section {
+    padding: 80px 16px 64px;
+  }
+
+  .attend-btn {
+    font-size: 1.2rem;
+    padding: 15px 32px;
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .modal-box {
+    padding: 32px 20px 24px;
+    border-radius: 24px 24px 16px 16px;
+    max-height: 92vh;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+  }
+
+  .guest-grid,
+  .guest-grid-more {
+    gap: 10px;
+  }
+
+  .guest-btn {
+    padding: 12px 6px 10px;
+    border-radius: 16px;
+  }
+
+  .guest-num {
+    font-size: 1.15rem;
   }
 }
