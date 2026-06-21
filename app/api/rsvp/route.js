@@ -12,11 +12,6 @@ function getRedis() {
   });
 }
 
-function getIP(request) {
-  const forwarded = request.headers.get('x-forwarded-for');
-  if (forwarded) return forwarded.split(',')[0].trim();
-  return request.headers.get('x-real-ip') ?? null;
-}
 
 export async function GET() {
   try {
@@ -45,30 +40,29 @@ export async function GET() {
 }
 
 export async function POST(request) {
+  console.log('[rsvp POST] handler reached');
   try {
     const body   = await request.json();
+    console.log('[rsvp POST] body received:', body);
+
     const adults = parseInt(body.adults, 10);
     const kids   = parseInt(body.kids,   10);
 
+    console.log('[rsvp POST] parsed — adults:', adults, 'kids:', kids);
+
     if (isNaN(adults) || adults < 1 || adults > 10) {
+      console.error('[rsvp POST] invalid adult count:', adults);
       return NextResponse.json({ error: 'Invalid adult count' }, { status: 400 });
     }
     if (isNaN(kids) || kids < 0 || kids > 10) {
+      console.error('[rsvp POST] invalid kids count:', kids);
       return NextResponse.json({ error: 'Invalid kids count' }, { status: 400 });
     }
 
     const total = adults + kids;
-    const redis = getRedis();
+    console.log('[rsvp POST] incrementing — total:', total, 'adults:', adults, 'kids:', kids);
 
-    // IP rate limiting — one RSVP per IP per 24 hours
-    const ip = getIP(request);
-    if (ip) {
-      const ipKey = `rsvp_ip:${ip}`;
-      const set = await redis.set(ipKey, 1, { nx: true, ex: 86400 });
-      if (set === null) {
-        return NextResponse.json({ error: 'Already counted!' }, { status: 429 });
-      }
-    }
+    const redis = getRedis();
 
     const [newTotal, newAdults, newKids] = await Promise.all([
       redis.incrby(TOTAL_KEY,  total),
@@ -76,13 +70,15 @@ export async function POST(request) {
       redis.incrby(KIDS_KEY,   kids),
     ]);
 
+    console.log('[rsvp POST] success — newTotal:', newTotal, 'newAdults:', newAdults, 'newKids:', newKids);
+
     return NextResponse.json({
       total:  Number(newTotal),
       adults: Number(newAdults),
       kids:   Number(newKids),
     });
   } catch (error) {
-    console.error('Redis POST error:', error);
+    console.error('[rsvp POST] error:', error);
     return NextResponse.json({ error: 'Failed to update count' }, { status: 500 });
   }
 }

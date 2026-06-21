@@ -272,8 +272,11 @@ export default function RSVPSection() {
           setTotalCount(apiData.total);
           setAdultsCount(apiData.adults);
           setKidsCount(apiData.kids);
+        } else {
+          const errData = await apiRes.json().catch(() => ({}));
+          console.error('[rsvp] counter API non-ok:', apiRes.status, errData);
         }
-      } catch { /* counter update is non-critical */ }
+      } catch (err) { console.error('[rsvp] counter fetch failed:', err); }
 
       // 3. Mark locally & celebrate
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ adults, kids, total, ts: Date.now() }));
