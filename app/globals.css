@@ -341,16 +341,19 @@ body {
 }
 
 .details-grid {
-  display: grid;
-  /* minmax(0, 1fr) forces truly equal columns — plain 1fr respects min-content */
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: stretch;
+  /* flexbox + flex: 1 1 0px on children = mathematically equal widths,
+     content size plays zero role (unlike grid 1fr which has min-content floor) */
+  display: flex;
+  flex-direction: row;
   gap: 24px;
   max-width: 860px;
   margin: 0 auto 40px;
 }
 
 .detail-card {
+  /* flex: 1 1 0px — each card starts at 0 and grows equally, ignoring content */
+  flex: 1 1 0px;
+  min-width: 0;
   background: var(--white);
   border: 2.5px solid rgba(28,28,28,0.55);
   border-radius: 24px;
@@ -361,9 +364,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* prevent content from inflating width beyond grid cell */
-  width: 100%;
-  min-width: 0;
   box-sizing: border-box;
   transition: transform 0.22s cubic-bezier(0.34, 1.2, 0.64, 1),
               box-shadow 0.22s ease,
@@ -444,7 +444,8 @@ body {
 /* Venue detail card colors (separate from .venue-card in location section) */
 .detail-card.venue-detail-card {
   background: var(--black);
-  border-color: rgba(255,255,255,0.15);
+  /* visible border so the card edge is perceptually equal to date/time cards */
+  border-color: rgba(255,255,255,0.45);
 }
 .detail-card.venue-detail-card .detail-label { color: rgba(255,255,255,0.6); }
 .detail-card.venue-detail-card .detail-value { color: var(--white); }
@@ -1375,9 +1376,15 @@ body {
 @media (max-width: 640px) {
   /* Details grid → single column on tablet */
   .details-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 16px;
     max-width: 420px;
+  }
+
+  .detail-card {
+    flex: none;
+    width: 100%;
+    min-height: 160px;
   }
 
   /* Gift grid → 2 equal columns */
@@ -1450,15 +1457,17 @@ body {
 
   /* Details grid → single column on small phones */
   .details-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 14px;
     max-width: 100%;
   }
 
   .detail-card {
+    flex: none;
+    width: 100%;
+    min-height: 160px;
     padding: 24px 20px;
     border-radius: 20px;
-    min-height: 160px;
   }
 
   /* Countdown strip */
