@@ -175,10 +175,10 @@ export default function Home() {
           </div>
 
           <div
-            className="detail-card"
+            className="detail-card venue-dark"
             data-reveal
             data-reveal-delay="260"
-            style={{ background: '#1c1c1c', borderColor: 'rgba(28,28,28,0.8)' }}
+            style={{ background: '#1c1c1c', border: '2.5px solid rgba(28,28,28,0.8)' }}
           >
             <span className="detail-icon">📍</span>
             <div className="detail-label" style={{ color: 'rgba(255,255,255,0.6)' }}>Venue</div>

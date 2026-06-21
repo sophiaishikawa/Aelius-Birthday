@@ -341,18 +341,15 @@ body {
 }
 
 .details-grid {
-  /* flexbox + flex: 1 1 0px on children = mathematically equal widths,
-     content size plays zero role (unlike grid 1fr which has min-content floor) */
-  display: flex;
-  flex-direction: row;
+  /* CSS Grid guarantees pixel-perfect equal columns regardless of content or cascade */
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
   max-width: 860px;
   margin: 0 auto 40px;
 }
 
 .detail-card {
-  /* flex: 1 1 0px — each card starts at 0 and grows equally, ignoring content */
-  flex: 1 1 0px;
   min-width: 0;
   background: var(--white);
   border: 2.5px solid rgba(28,28,28,0.55);
@@ -451,7 +448,8 @@ body {
   padding-bottom: 10px;
   margin-bottom: 10px;
 }
-.detail-card.time-card .detail-label {
+.detail-card.time-card .detail-label,
+.detail-card.venue-dark .detail-label {
   border-bottom-color: rgba(255,255,255,0.2);
 }
 
@@ -1369,13 +1367,12 @@ body {
 @media (max-width: 640px) {
   /* Details grid → single column on tablet */
   .details-grid {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 16px;
     max-width: 420px;
   }
 
   .detail-card {
-    flex: none;
     width: 100%;
     min-height: 160px;
   }
@@ -1450,13 +1447,12 @@ body {
 
   /* Details grid → single column on small phones */
   .details-grid {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 14px;
     max-width: 100%;
   }
 
   .detail-card {
-    flex: none;
     width: 100%;
     min-height: 160px;
     padding: 24px 20px;
