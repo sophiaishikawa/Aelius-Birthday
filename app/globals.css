@@ -342,7 +342,8 @@ body {
 
 .details-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* minmax(0, 1fr) forces truly equal columns — plain 1fr respects min-content */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
   gap: 24px;
   max-width: 860px;
@@ -356,12 +357,13 @@ body {
   padding: 32px 24px;
   text-align: center;
   box-shadow: var(--shadow-md);
-  /* equal height: fill grid cell and center content */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* prevent content from inflating width beyond grid cell */
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
   transition: transform 0.22s cubic-bezier(0.34, 1.2, 0.64, 1),
               box-shadow 0.22s ease,
