@@ -1396,9 +1396,11 @@ body {
     width: 100%;
   }
 
-  /* Venue card full width */
+  /* Venue card full width — override base max-width: 480px */
   .venue-card {
-    max-width: 100%;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 180px !important;
   }
 
   /* Description card full width */
@@ -1510,8 +1512,10 @@ body {
   }
 
   .venue-card {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 180px !important;
     padding: 24px 18px;
-    max-width: 100%;
     border-radius: 20px;
     gap: 8px;
   }
