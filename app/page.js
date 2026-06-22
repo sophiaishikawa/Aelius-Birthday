@@ -74,19 +74,20 @@ const STARS = [
 ];
 
 const GIFTS = [
-  { emoji: '🐣', bg: '#e8f4ff', category: 'Diapers',          desc: 'Any brand, size 2 and above'        },
-  { emoji: '🛁', bg: '#f0e8ff', category: 'Lotion & Baby Wash', desc: 'Gentle, fragrance-free preferred'  },
-  { emoji: '🧦', bg: '#e8fff4', category: 'Clothing',          desc: 'Size 12–18 months and up'          },
-  { emoji: '🌙', bg: '#fff8e8', category: 'Books',             desc: 'Board books and picture books'      },
-  { emoji: '🧸', bg: '#ffe8f0', category: 'Toys',              desc: 'Age-appropriate toys for 1 year old'},
+  { emoji: '🐣', bg: '#e8f4ff', category: 'Diapers',          desc: 'Kleenfant Taped Diaper (XL)'        },
+  { emoji: '🛁', bg: '#f0e8ff', category: 'Baby Wash',        desc: 'Cetaphil Products (Baby Wash & Shampoo)'  },
+  { emoji: '🧦', bg: '#e8fff4', category: 'Clothing',         desc: 'Size 12–24 months and up'          },
+  { emoji: '🌙', bg: '#fff8e8', category: 'Books',            desc: 'Educational Toys & Learning Books'      },
+  { emoji: '🧴', bg: '#ffe8f0', category: 'Lotion',             desc: 'Mustela Body Lotion'},
+  { emoji: '💵', bg: '#e8f4ff', category: 'Money',            desc: "Monetary Gift for Aelius Ry's savings"},
 ];
 
 const DRESS_COLORS = [
   { hex: '#E8262D', label: 'Mickey Red'    },
   { hex: '#1C1C1C', label: 'Mickey Black'  },
-  { hex: '#FFD700', label: 'Mickey Gold'   },
-  { hex: '#FFFFFF', label: 'Classic White' },
-  { hex: '#FF69B4', label: 'Party Pink'    },
+  // { hex: '#FFD700', label: 'Mickey Gold'   },
+  // { hex: '#FFFFFF', label: 'Classic White' },
+  // { hex: '#FF69B4', label: 'Party Pink'    },
 ];
 
 export default function Home() {
@@ -142,10 +143,15 @@ export default function Home() {
           <div className="birthday-tag hero-reveal-0">✨ First Birthday ✨</div>
 
           <div className="photo-frame hero-reveal-1">
-            <div className="photo-placeholder">
+            <img
+              src="/images/image.png"
+              alt="Aelius Ry"
+              className="photo-image"
+            />
+            {/* <div className="photo-placeholder">
               <span className="photo-emoji">👶</span>
               <span className="photo-label">Aelius Ry&apos;s Photo</span>
-            </div>
+            </div> */}
           </div>
 
           <h1 className="hero-name hero-reveal-2">Aelius Ry&apos;s</h1>
@@ -153,7 +159,7 @@ export default function Home() {
       </section>
 
       {/* ── EVENT DETAILS ─────────────────────────────────── */}
-      <section className="event-details">
+      <section className="event-details" id="event-details">
         <h2 className="section-heading" data-reveal>
           <MickeyEarsSmall />
           Party Details
@@ -170,8 +176,8 @@ export default function Home() {
           <div className="detail-card time-card" data-reveal data-reveal-delay="130">
             <span className="detail-icon">🕐</span>
             <div className="detail-label">Time</div>
-            <div className="detail-value">Coming Soon</div>
-            <div className="detail-hint">Replace with your time</div>
+            <div className="detail-value">3:00 PM</div>
+            {/* <div className="detail-hint">Replace with your time</div> */}
           </div>
 
           <div
@@ -182,8 +188,8 @@ export default function Home() {
           >
             <span className="detail-icon">📍</span>
             <div className="detail-label" style={{ color: 'rgba(255,255,255,0.6)' }}>Venue</div>
-            <div className="detail-value" style={{ color: '#ffffff' }}>Coming Soon</div>
-            <div className="detail-hint" style={{ color: 'rgba(255,255,255,0.4)' }}>Replace with your venue</div>
+            <div className="detail-value" style={{ color: '#ffffff' }}>San Diego's Garden</div>
+            <div className="detail-hint" style={{ color: 'rgba(255,255,255,0.4)' }}>65 Evangelista, Duhat, Bocaue, Bulacan</div>
           </div>
         </div>
 
@@ -191,14 +197,14 @@ export default function Home() {
           <CountdownTimer />
         </div>
 
-        <div className="description-card" data-reveal data-reveal-delay="180">
+        {/* <div className="description-card" data-reveal data-reveal-delay="180">
           🎈{' '}
           <em>
             Event description coming soon! Replace this with your party details — dress code, gift
             info, food, activities, and anything else your guests need to know!
           </em>{' '}
           🎈
-        </div>
+        </div> */}
       </section>
 
       {/* ── LOCATION ──────────────────────────────────────── */}
@@ -209,7 +215,7 @@ export default function Home() {
         </h2>
         <div className="section-rule" data-reveal data-reveal-delay="80" />
 
-        <div className="map-illustrated" role="img" aria-label="Map coming soon" data-reveal data-reveal-delay="160">
+        {/* <div className="map-illustrated" role="img" aria-label="Map coming soon" data-reveal data-reveal-delay="160">
           <div className="map-road-h" />
           <div className="map-road-v" />
           <div className="map-road-h map-road-h2" />
@@ -225,18 +231,18 @@ export default function Home() {
             <span className="map-pin-emoji">📍</span>
           </div>
           <p className="map-coming-soon">Map coming soon</p>
-        </div>
+        </div> */}
 
-        <div className="location-chips" data-reveal data-reveal-delay="120">
+        {/* <div className="location-chips" data-reveal data-reveal-delay="120">
           {['🅿️ Free Parking', '👶 Baby-friendly', '👗 Casual Dress', '🎂 Cake provided'].map((chip) => (
             <span key={chip} className="location-chip">{chip}</span>
           ))}
-        </div>
+        </div> */}
 
         <div className="venue-card" data-reveal data-reveal-delay="200">
-          <div className="venue-name">Venue Name Placeholder</div>
-          <div className="venue-address">123 Party Lane, Celebration City, CA 90210</div>
-          <a href="#" className="directions-btn">🗺️ Get Directions</a>
+          <div className="venue-name">San Diego's Garden</div>
+          <div className="venue-address">65 Evangelista, Duhat, Bocaue, Bulacan</div>
+          <a href="https://www.google.com/maps/place/San+Diego's+Garden/@14.7880373,120.9547888,17z/data=!3m1!4b1!4m6!3m5!1s0x3397adda3c49eb8b:0xe89cd9a1d301cec2!8m2!3d14.7880373!4d120.9573637!16s%2Fg%2F11rkhqsbjl?entry=ttu&g_ep=EgoyMDI2MDYxNi4wIKXMDSoASAFQAw%3D%3D" className="directions-btn">🗺️ Get Directions</a>
         </div>
       </section>
 
@@ -268,14 +274,25 @@ export default function Home() {
 
       {/* ── DRESS CODE ────────────────────────────────────── */}
       <section className="dress-code-section">
-        <h2 className="section-heading" data-reveal>
-          <MickeyEarsSmall />
+        <h1 className="section-heading" data-reveal
+        style={{
+            color: "#1C1C1C",
+            fontSize: "4rem",
+            fontWeight: "bold",
+          }}>
+          <MickeyEarsSmall 
+          />
           Dress Code
-        </h2>
+        </h1>
         <div className="section-rule" data-reveal data-reveal-delay="80" />
-        <p className="dress-code-sub" data-reveal data-reveal-delay="130">
-          Come dressed in our party colors!
-        </p>
+        <h1 className="dress-code-sub" data-reveal data-reveal-delay="130"
+          style={{
+            color: "#E8262D",
+            fontSize: "4rem",
+            fontWeight: "bold",
+          }}>
+          ANY COLOR EXCEPT THIS!
+        </h1>
 
         <div className="dress-code-swatches">
           {DRESS_COLORS.map(({ hex, label }, i) => (

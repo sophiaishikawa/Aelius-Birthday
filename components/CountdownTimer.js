@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-const PARTY = new Date('2026-07-18T00:00:00');
+const PARTY = new Date('2026-07-18T15:00:00');
 
 function pad(n) { return String(n).padStart(2, '0'); }
 
