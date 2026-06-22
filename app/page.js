@@ -168,7 +168,7 @@ export default function Home() {
 
         <div className="details-grid">
           <div className="detail-card date-card" data-reveal data-reveal-delay="0">
-            <span className="detail-icon">📅</span>
+            <span className="detail-icon">🗓️</span>
             <div className="detail-label">Date</div>
             <div className="detail-value">July 18, 2026</div>
           </div>
