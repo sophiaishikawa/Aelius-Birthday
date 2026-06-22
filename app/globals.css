@@ -193,7 +193,7 @@ body {
   width: 200px;  height: 200px;  overflow: hidden;  border-radius: 50%;  border: 6px solid #fff;%20%20box-shadow:%200%204px%2015px%20rgba(0,0,0,0.2);
 }
 .photo-image {
-  width: 100%;  height: 80%;  object-fit: cover; object-position: center -40px right -150px; transform: scale(1.5);  display: block;
+  width: 100%;  height: 100%;  object-fit: cover; object-position: center -40px; transform: scale(2);  display: block;
 }
 
 /* real image — uncomment / drop in when replacing placeholder */
