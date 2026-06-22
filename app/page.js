@@ -215,30 +215,6 @@ export default function Home() {
         </h2>
         <div className="section-rule" data-reveal data-reveal-delay="80" />
 
-        {/* <div className="map-illustrated" role="img" aria-label="Map coming soon" data-reveal data-reveal-delay="160">
-          <div className="map-road-h" />
-          <div className="map-road-v" />
-          <div className="map-road-h map-road-h2" />
-          <div className="map-road-v map-road-v2" />
-          <div className="map-road-h map-road-h3" />
-          <div className="map-road-v map-road-v3" />
-          <div className="map-building mb1" />
-          <div className="map-building mb2" />
-          <div className="map-building mb3" />
-          <div className="map-building mb4" />
-          <div className="map-pin-center">
-            <div className="map-pin-ring" />
-            <span className="map-pin-emoji">📍</span>
-          </div>
-          <p className="map-coming-soon">Map coming soon</p>
-        </div> */}
-
-        {/* <div className="location-chips" data-reveal data-reveal-delay="120">
-          {['🅿️ Free Parking', '👶 Baby-friendly', '👗 Casual Dress', '🎂 Cake provided'].map((chip) => (
-            <span key={chip} className="location-chip">{chip}</span>
-          ))}
-        </div> */}
-
         <div className="venue-card" data-reveal data-reveal-delay="200">
           <div className="venue-name">San Diego's Garden</div>
           <div className="venue-address">65 Evangelista, Duhat, Bocaue, Bulacan</div>
