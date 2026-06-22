@@ -127,7 +127,7 @@ const BALLOONS = [
   { emoji: '⭐', left: '93%', delay: '2.2s', dur: '8s'  },
 ];
 
-const EMPTY_FORM = { yourName: '', kidsNames: '' };
+const EMPTY_FORM = { adultNames: [''], kidsNames: '' };
 
 // ── Main component ───────────────────────────────────────────────────────────
 
@@ -195,15 +195,24 @@ export default function RSVPSection() {
   // ── Step 1 → Step 2 ──────────────────────────────────────────────────────
 
   const handleConfirmSize = useCallback(() => {
-    setFormData(EMPTY_FORM);
+    setFormData({ adultNames: Array(adults).fill(''), kidsNames: '' });
     setFormError(null);
     setModalStep('form');
-  }, []);
+  }, [adults]);
 
   // ── Form helpers ──────────────────────────────────────────────────────────
 
   const updateField = useCallback(
     (field) => (e) => setFormData((prev) => ({ ...prev, [field]: e.target.value })),
+    [],
+  );
+
+  const updateAdultName = useCallback(
+    (index) => (e) => setFormData((prev) => {
+      const adultNames = [...prev.adultNames];
+      adultNames[index] = e.target.value;
+      return { ...prev, adultNames };
+    }),
     [],
   );
 
@@ -240,13 +249,18 @@ export default function RSVPSection() {
     const total = adults + kids;
 
     try {
+      const adultNameEntries = formData.adultNames.reduce((acc, name, i) => {
+        acc[adults === 1 ? 'Your Name' : `Adult ${i + 1} Name`] = name;
+        return acc;
+      }, {});
+
       const payload = {
-        '_subject':                     `RSVP: ${formData.yourName} (${adults} adult${adults !== 1 ? 's' : ''}, ${kids} kid${kids !== 1 ? 's' : ''})`,
-        'Your Name':                    formData.yourName,
-        'Adults':                       String(adults),
-        'Kids':                         String(kids),
-        'Total Guests':                 String(total),
-        "Kids' Names":                  formData.kidsNames || 'N/A',
+        '_subject':    `RSVP: ${formData.adultNames[0]} (${adults} adult${adults !== 1 ? 's' : ''}, ${kids} kid${kids !== 1 ? 's' : ''})`,
+        ...adultNameEntries,
+        'Adults':      String(adults),
+        'Kids':        String(kids),
+        'Total Guests': String(total),
+        "Kids' Names": formData.kidsNames || 'N/A',
       };
 
       // 1. Submit to Formspree
@@ -446,18 +460,22 @@ export default function RSVPSection() {
 
                 {formError && <p className="modal-error">⚠️ {formError}</p>}
 
-                <div className="form-field">
-                  <label className="form-label" htmlFor="yourName">Your Name *</label>
-                  <input
-                    id="yourName"
-                    className="form-input"
-                    type="text"
-                    required
-                    placeholder="Your name"
-                    value={formData.yourName}
-                    onChange={updateField('yourName')}
-                  />
-                </div>
+                {formData.adultNames.map((name, i) => (
+                  <div className="form-field" key={i}>
+                    <label className="form-label" htmlFor={`adult-${i}`}>
+                      {adults === 1 ? 'Your Name' : `Adult ${i + 1} Name`} *
+                    </label>
+                    <input
+                      id={`adult-${i}`}
+                      className="form-input"
+                      type="text"
+                      required
+                      placeholder={adults === 1 ? 'Your name' : `Adult ${i + 1} name`}
+                      value={name}
+                      onChange={updateAdultName(i)}
+                    />
+                  </div>
+                ))}
 
                 {kids > 0 && (
                   <div className="form-field">
