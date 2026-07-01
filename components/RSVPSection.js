@@ -276,6 +276,7 @@ export default function RSVPSection() {
 
       // 2. Increment Redis counters (non-critical)
       try {
+        console.log('[rsvp] posting to /api/rsvp — adults:', adults, 'kids:', kids);
         const apiRes = await fetch('/api/rsvp', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -373,26 +374,8 @@ export default function RSVPSection() {
             <p className="celebration-heading">Yay! See you at Aelius Ry&apos;s party! 🎉</p>
             <p className="celebration-sub">We can&apos;t wait to celebrate with you!</p>
           </div>
-        ) : submitting ? (
-          <div className="rsvp-submitting">
-            <span className="spinner" />
-            Sending your RSVP...
-          </div>
         ) : (
-          <button
-            ref={magnetRef}
-            className="attend-btn"
-            onClick={() => {
-              setAdults(1);
-              setKids(0);
-              setModalStep('size');
-            }}
-            onMouseMove={handleMagnet}
-            onMouseLeave={handleMagnetLeave}
-            aria-label="RSVP to the party"
-          >
-            I&apos;m Attending! 🎉
-          </button>
+          <p className="rsvp-closed">RSVP has closed. Thank you!</p>
         )}
       </section>
 
